@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hangman/const/const.dart';
+import 'package:flutter_hangman/games/hidden_letters.dart';
 
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key});
@@ -10,6 +10,8 @@ class GameScreen extends StatefulWidget {
 
 class _GameScreenState extends State<GameScreen> {
   var characters = "abcdefghijklmnopqrstuvwxyz".toUpperCase();
+  var word = "baaba".toUpperCase();
+  List<String> selectedChar = [];
 
   @override
   Widget build(BuildContext context) {
@@ -23,34 +25,57 @@ class _GameScreenState extends State<GameScreen> {
       body: Column(children: [
         //show hangman
         Expanded(
-            child: Container(
-          color: Colors.red,
-        )),
+            flex: 4,
+            child: Column(
+              // color: Colors.red,
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: Container(color: Colors.yellow),
+                ),
+                Expanded(
+                  child: Container(
+                      //showing letters
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: word
+                              .split("")
+                              .map((e) => hiddenLetter(
+                                  e, !selectedChar.contains(e.toUpperCase())))
+                              .toList())
+                      // color: Colors.green
+                      ),
+                )
+              ],
+            )),
 
         //Show keyboard
         Expanded(
+            flex: 2,
             child: Container(
-          padding: const EdgeInsets.all(8.0),
-          child: GridView.count(
-              physics: const NeverScrollableScrollPhysics(), //scroller audaina
-              crossAxisCount: 6,
-              crossAxisSpacing: 4,
-              mainAxisSpacing: 4,
-              children: characters.split("").map((e) {
-                return ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black87),
-                    onPressed: () {},
-                    child: Text(
-                      e,
-                      style: const TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ));
-              }).toList()),
-          // color: Colors.green
-        )),
+              padding: const EdgeInsets.all(8.0),
+              child: GridView.count(
+                  physics:
+                      const NeverScrollableScrollPhysics(), //scroller audaina
+                  crossAxisCount: 7,
+                  crossAxisSpacing: 4,
+                  mainAxisSpacing: 4,
+                  children: characters.split("").map((e) {
+                    return ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black87),
+                        onPressed: () {},
+                        child: Text(
+                          e,
+                          style: const TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ));
+                  }).toList()),
+              // color: Colors.green
+            )),
       ]),
     );
   }
